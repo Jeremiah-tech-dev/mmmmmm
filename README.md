@@ -211,6 +211,7 @@ const dodger = document.getElementById("dodger");
 
 Now we'll build our `moveDodgerLeft()` function, adding a check on the current
 position of the dodger:
+const dodger = document.getElementById("dodger");
 
 ```javascript
 function moveDodgerLeft() {
@@ -250,13 +251,13 @@ another condition to your event listener's callback function to call
 `${left - 1}px`, you'll be moving it `${left + 1}px`.
 
 **Note:** It may seem logical that you would use the dodger's `style.right`
-property to move the dodger right, but that won't work. The reason is that
-changing the `style.right` property _doesn't change_ the `style.left` property,
-which means we'd have conflicting information about where the dodger should be
-on the screen. JavaScript solves this problem by giving precedence to
-`style.left`. In other words, once the user presses the left arrow key for the
-first time and the value of `style.left` is changed, any subsequent changes to
-`style.right` will be ignored.
+property to move the dodger right, but that won't work as expected with the
+current logic. An element's horizontal position is determined by its `left`
+property. Changing the `style.right` property _doesn't automatically update_
+the `style.left` property. Since our code for moving left and right both
+reads from and writes to `dodger.style.left`, we must continue to use it for
+all horizontal movement to ensure the position is calculated from a single,
+consistent source.
 
 Finally, implement the code needed to prevent the dodger from escaping off the
 right-hand side. How can we check whether the _right_ edge of the dodger has
@@ -269,8 +270,7 @@ sure it works the way you expect in the browser. In professional applications,
 tests can't cover 100% of the use of the application. It's important to
 realize that "passing all the tests" _is not the same_ as "building a working
 application."
-
-Be sure to do a human-level manual "play through" with your dodger to make sure
+Be sure to do a human-level manual "play-through" with your dodger to make sure
 your working code _really works_!
 
 ![Passing the Tests is only part of the job](https://media.giphy.com/media/vvLWidwZNYH5e/200w_d.gif)
